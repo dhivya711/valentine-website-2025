@@ -1,112 +1,132 @@
-// ============================================
-// 💝 CUSTOMIZE YOUR VALENTINE'S WEBSITE HERE 💝
-// ============================================
+// =====================================
+// 💝 VALENTINE SINGLE JS FILE 💝
+// =====================================
 
-const CONFIG = {
-    // Your Valentine's name that will appear in the title
-    // Example: "Jade", "Sarah", "Mike"
-    valentineName: "Arun",
-
-    // The title that appears in the browser tab
-    // You can use emojis! 💝 💖 💗 💓 💞 💕
+const VALENTINE_CONFIG = {
     pageTitle: "Will You Be My Valentine? 💝",
 
-    // Floating emojis that appear in the background
-    // Find more emojis at: https://emojipedia.org
-    floatingEmojis: {
-        hearts: ['❤️', '💖', '💝', '💗', '💓'],  // Heart emojis
-        bears: ['🧸', '🐻']                       // Cute bear emojis
-    },
-
-    // Questions and answers
-    // Customize each question and its possible responses
- questions: {
-    first: {
-        text: "Do you like me?",
-        buttons: [
-            {
-                label: "Yes ❤️",
-                action: "next"
-            },
-            {
-                label: "No 😐",
-                action: "secret",
-                secretAnswer: "I don't like you, I love you! ❤️"
-            }
-        ]
-    },
-
-    second: {
-        text: "How much do you love me?",
-        buttons: [
-            { label: "100% 🥰", value: 100 },
-            { label: "1000% 🚀", value: 1000 },
-            { label: "5000% 💝", value: 5000 },
-            { label: "Infinity ♾️❤️", value: 6000 }
-        ],
-        nextBtn: "Next ❤️"
-    },
-
-    third: {
-        text: "Will you be my Valentine on February 14th, 2025? 🌹",
-        buttons: [
-            {
-                label: "Yes! 💖",
-                action: "accept"
-            },
-            {
-                label: "No 🙈",
-                action: "escape"
-            }
-        ]
-    }
-},
-
-    // Love meter messages
-    // They show up depending on how far they slide the meter
-    loveMessages: {
-        extreme: "WOOOOW You love me that much?? 🥰🚀💝",  // Shows when they go past 5000%
-        high: "To infinity and beyond! 🚀💝",              // Shows when they go past 1000%
-        normal: "And beyond! 🥰"                           // Shows when they go past 100%
-    },
-
-    // Messages that appear after they say "Yes!"
-    celebration: {
-        title: "Yay! I'm the luckiest person in the world! 🎉💝💖💝💓",
-        message: "Now come get your gift, a big warm hug and a huge kiss!",
-        emojis: "🎁💖🤗💝💋❤️💕"  // These will bounce around
-    },
-
-    // Color scheme for the website
-    // Use https://colorhunt.co or https://coolors.co to find beautiful color combinations
-    colors: {
-        backgroundStart: "#ffafbd",      // Gradient start (try pastel colors for a soft look)
-        backgroundEnd: "#ffc3a0",        // Gradient end (should complement backgroundStart)
-        buttonBackground: "#ff6b6b",     // Button color (should stand out against the background)
-        buttonHover: "#ff8787",          // Button hover color (slightly lighter than buttonBackground)
-        textColor: "#ff4757"             // Text color (make sure it's readable!)
-    },
-
-    // Animation settings
-    // Adjust these if you want faster/slower animations
-    animations: {
-        floatDuration: "15s",           // How long it takes hearts to float up (10-20s recommended)
-        floatDistance: "50px",          // How far hearts move sideways (30-70px recommended)
-        bounceSpeed: "0.5s",            // Speed of bouncing animations (0.3-0.7s recommended)
-        heartExplosionSize: 1.5         // Size of heart explosion effect (1.2-2.0 recommended)
-    },
-
-    // Background Music (Optional)
-    // Add your own music URL after getting proper licenses
     music: {
-        enabled: true,                     // Music feature is enabled
-        autoplay: true,                    // Try to autoplay (note: some browsers may block this)
-        musicUrl: "https://res.cloudinary.com/degw0auyr/video/upload/v1770713100/poove_kadhal_pookum_kxirdr.mp3", // Music streaming URL
-        startText: "🎵 Play Music",        // Button text to start music
-        stopText: "🔇 Stop Music",         // Button text to stop music
-        volume: 0.5                        // Volume level (0.0 to 1.0)
-    }
+        enabled: true,
+        autoplay: true,
+        musicUrl: "https://res.cloudinary.com/dncywqfpb/video/upload/v1738399057/music_qrhjvy.mp3",
+        volume: 0.5
+    },
+
+    cloudinary: {
+        imageUrl: "https://res.cloudinary.com/dncywqfpb/image/upload/v1738399057/love_image.jpg"
+        // 🔁 replace with your Cloudinary image if needed
+    },
+
+    loveText: "Love you arun. ❤️"
 };
 
-// Don't modify anything below this line unless you know what you're doing
-window.VALENTINE_CONFIG = CONFIG; 
+document.title = VALENTINE_CONFIG.pageTitle;
+
+// ---------- ELEMENTS ----------
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const loveTextEl = document.getElementById("loveText");
+const loveImage = document.getElementById("loveImage");
+
+// ---------- SET IMAGE ----------
+loveImage.src = VALENTINE_CONFIG.cloudinary.imageUrl;
+
+// ---------- PAGE FLOW ----------
+yesBtn.addEventListener("click", () => {
+    page1.style.display = "none";
+    page2.style.display = "flex";
+
+    fadeInMusic();
+    animateImage();
+    typeText(VALENTINE_CONFIG.loveText);
+    startHearts();
+});
+
+// ---------- NO BUTTON RUN AWAY ----------
+noBtn.addEventListener("mouseenter", () => {
+    noBtn.style.position = "absolute";
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+});
+
+// ---------- MUSIC FADE-IN ----------
+let music = null;
+
+function fadeInMusic() {
+    if (!VALENTINE_CONFIG.music.enabled || music) return;
+
+    music = new Audio(VALENTINE_CONFIG.music.musicUrl);
+    music.volume = 0;
+    music.play().catch(() => {});
+
+    let vol = 0;
+    const target = VALENTINE_CONFIG.music.volume;
+
+    const fade = setInterval(() => {
+        vol += 0.02;
+        music.volume = vol;
+        if (vol >= target) clearInterval(fade);
+    }, 100);
+}
+
+// ---------- IMAGE ANIMATION ----------
+function animateImage() {
+    loveImage.style.opacity = "0";
+    loveImage.style.transform = "scale(0.5) translateY(40px)";
+
+    setTimeout(() => {
+        loveImage.style.transition = "all 0.8s ease-out";
+        loveImage.style.opacity = "1";
+        loveImage.style.transform = "scale(1) translateY(0)";
+    }, 200);
+}
+
+// ---------- TYPING EFFECT ----------
+function typeText(text) {
+    loveTextEl.textContent = "";
+    let i = 0;
+
+    const typing = setInterval(() => {
+        loveTextEl.textContent += text.charAt(i);
+        i++;
+        if (i === text.length) clearInterval(typing);
+    }, 100);
+}
+
+// ---------- FLOATING HEARTS ----------
+const hearts = ["❤️", "💖", "💝", "💗", "💓"];
+
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+
+        heart.style.position = "fixed";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.bottom = "-30px";
+        heart.style.fontSize = Math.random() * 16 + 20 + "px";
+        heart.style.pointerEvents = "none";
+        heart.style.animation = "floatUp 6s linear";
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }, 400);
+}
+
+// ---------- HEART ANIMATION CSS ----------
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+`;
+document.head.appendChild(style);
