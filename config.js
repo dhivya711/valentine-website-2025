@@ -8,7 +8,7 @@ const VALENTINE_CONFIG = {
     music: {
         enabled: true,
         autoplay: true,
-        musicUrl: "https://res.cloudinary.com/dncywqfpb/video/upload/v1738399057/music_qrhjvy.mp3",
+        musicUrl: "https://res.cloudinary.com/degw0auyr/video/upload/v1770713100/poove_kadhal_pookum_kxirdr.mp3",
         volume: 0.5
     },
 
